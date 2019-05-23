@@ -16,6 +16,9 @@ import (
 func main() {
 	db, _ := sql.Open("sqlite3", "./newsfeed.db")
 	feed := newsfeed.FromSQLite(db)
+	
+	// Alternatively use this
+	// feed := newsfeed.InMemory()
 
 	r := chi.NewRouter()
 	r.Use(yin.SimpleLogger)
