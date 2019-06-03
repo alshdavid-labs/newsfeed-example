@@ -9,16 +9,6 @@ type SQLite struct {
 	DB *sql.DB
 }
 
-func (s *SQLite) init() {
-	stmt, _ := s.DB.Prepare(`
-		CREATE TABLE IF NOT EXISTS
-			newsfeed_items (
-				ID	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-				content	TEXT
-			);`)
-	stmt.Exec()
-}
-
 // Get gets items from the database
 func (s *SQLite) Get() []Item {
 	items := []Item{}
@@ -42,9 +32,15 @@ func (s *SQLite) Set(item Item) bool {
 
 // FromSQLite creates a newfeed that uses sqlite
 func FromSQLite(conn *sql.DB) *SQLite {
-	s := &SQLite{
+	stmt, _ := conn.DB.Prepare(`
+	CREATE TABLE IF NOT EXISTS
+		newsfeed_items (
+			ID	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+			content	TEXT
+		);
+	`)
+	stmt.Exec()
+	return &SQLite{
 		DB: conn,
 	}
-	s.init()
-	return s
 }
