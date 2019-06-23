@@ -32,7 +32,7 @@ func (s *SQLite) Set(item Item) bool {
 
 // FromSQLite creates a newfeed that uses sqlite
 func FromSQLite(conn *sql.DB) *SQLite {
-	stmt, _ := conn.DB.Prepare(`
+	stmt, _ := conn.Prepare(`
 	CREATE TABLE IF NOT EXISTS
 		newsfeed_items (
 			ID	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
